@@ -4,7 +4,7 @@ import org.junit.Test;
 import pages.BracketsPage;
 import pages.NewsPage;
 
-public class BP_002_Test {
+public class PG_002_Test {
 
     BracketsPage bP = new BracketsPage();
     NewsPage nP = new NewsPage();
