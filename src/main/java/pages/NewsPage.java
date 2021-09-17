@@ -19,7 +19,7 @@ public class NewsPage {
     private SelenideElement cnnBusinessHeader = $("h2[data-analytics='CNN Business_list-hierarchical-xs_']");
     private ElementsCollection businessHeaders = $$(By.xpath("//h2[@data-analytics='CNN Business_list-hierarchical-xs_']//ancestor::ul//h3"));
 
-    public static void log(Object object) {
+    public void log(Object object) {
         System.out.println(object);
     }
 
@@ -121,10 +121,5 @@ public class NewsPage {
                 .stream()
                 .max(Map.Entry.comparingByValue())
                 .map(Map.Entry::getKey).get();
-    }
-
-    public NewsPage logInfo(Object object) {
-        log(object);
-        return this;
     }
 }
