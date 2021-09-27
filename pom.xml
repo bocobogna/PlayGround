@@ -9,60 +9,49 @@
     <version>1.0-SNAPSHOT</version>
 
     <name>PlayGround</name>
-    <!-- FIXME change it to the project's website -->
-    <url>http://www.example.com</url>
-
+    <url>http://www.google.com</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
+        <junitVersion>5.8.1</junitVersion>
+        <assertjVersion>3.21.0</assertjVersion>
+        <seleniumVersion>3.141.59</seleniumVersion>
+        <selenideVersion>5.24.3</selenideVersion>
+        <slf4jVersion>1.7.32</slf4jVersion>
+        <logbackVersion>1.2.6</logbackVersion>
+        <jsonVersion>1.1.1</jsonVersion>
     </properties>
 
     <dependencies>
-        <!-- https://mvnrepository.com/artifact/io.rest-assured/rest-assured -->
-        <dependency>
-            <groupId>io.rest-assured</groupId>
-            <artifactId>rest-assured</artifactId>
-            <version>4.4.0</version>
-            <scope>test</scope>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/org.assertj/assertj-core -->
         <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
-            <version>3.20.2</version>
+            <version>${assertjVersion}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>io.rest-assured</groupId>
-            <artifactId>xml-path</artifactId>
-            <version>4.4.0</version>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>${junitVersion}</version>
+            <scope>test</scope>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
-            <version>5.7.2</version>
+            <version>${junitVersion}</version>
             <scope>test</scope>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java -->
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
-            <version>3.141.59</version>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/com.codeborne/selenide -->
-        <dependency>
-            <groupId>com.codeborne</groupId>
-            <artifactId>selenide</artifactId>
-            <version>5.24.0</version>
-            <scope>test</scope>
+            <version>${seleniumVersion}</version>
         </dependency>
         <dependency>
             <groupId>com.googlecode.json-simple</groupId>
             <artifactId>json-simple</artifactId>
-            <version>1.1.1</version>
+            <version>${jsonVersion}</version>
         </dependency>
         <dependency>
             <groupId>com.codeborne</groupId>
@@ -70,8 +59,21 @@
             <version>5.24.0</version>
             <scope>compile</scope>
         </dependency>
-
-
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4jVersion}</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-core</artifactId>
+            <version>${logbackVersion}</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${logbackVersion}</version>
+        </dependency>
     </dependencies>
 
     <build>
