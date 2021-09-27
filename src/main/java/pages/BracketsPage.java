@@ -6,13 +6,13 @@ public class BracketsPage {
         String onlyBrackets = "";
         for (int i = 0; i < rawString.length(); i++) {
             if (rawString.charAt(i) == '(' || rawString.charAt(i) == ')' || rawString.charAt(i) == '[' || rawString.charAt(i) == ']' || rawString.charAt(i) == '{' || rawString.charAt(i) == '}') {
-                onlyBrackets = onlyBrackets + Character.toString(rawString.charAt(i));
+                onlyBrackets = onlyBrackets + rawString.charAt(i);
             }
         }
         return onlyBrackets;
     }
 
-    public boolean isBalanced(String toEvaluate) {
+    public boolean isBalancedOnAmount(String toEvaluate) {
         int countOpened = 0;
         int countClosed = 0;
 

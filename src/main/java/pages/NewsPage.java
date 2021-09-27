@@ -10,6 +10,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 
@@ -19,10 +20,6 @@ public class NewsPage {
     private SelenideElement cnnBusinessHeader = $("h2[data-analytics='CNN Business_list-hierarchical-xs_']");
     private ElementsCollection businessHeaders = $$(By.xpath("//h2[@data-analytics='CNN Business_list-hierarchical-xs_']//ancestor::ul//h3"));
 
-    public void log(Object object) {
-        System.out.println(object);
-    }
-
     public NewsPage open() {
         Selenide.open("");
         return this;
@@ -30,15 +27,14 @@ public class NewsPage {
 
     public void acceptCookies() {
         acceptCookiesButton
-                .shouldBe(Condition.visible)
+                .shouldBe(visible)
                 .click();
     }
 
     public NewsPage scrollToHeaders() {
         cnnBusinessHeader
                 .scrollTo()
-                .shouldBe(Condition.visible);
-        log("Scrolled to headers");
+                .shouldBe(visible);
         return this;
     }
 
@@ -50,7 +46,7 @@ public class NewsPage {
     public List<String> headersToWordsList(List<String> list) {
         scrollToHeaders();
         String words = list.toString().toLowerCase();
-        words = words.replaceAll("[!,?.]", "");
+        words = words.replaceAll("[!,?.$&]", "");
         return Arrays.asList(words.split(" "));
     }
 
@@ -76,12 +72,6 @@ public class NewsPage {
                 .stream()
                 .filter(x -> Collections.frequency(list, x) > 1)
                 .collect(Collectors.toSet());
-    }
-
-    public String findMostPopularElement(List<String> list) {
-        list.stream()
-                .collect(Collectors.groupingBy(el -> el, Collectors.counting()));
-        return "";
     }
 
     public String getFirstDuplicate(List<String> list) {
