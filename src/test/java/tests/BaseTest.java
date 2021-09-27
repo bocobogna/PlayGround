@@ -1,13 +1,12 @@
 package tests;
 
-import com.codeborne.selenide.Browser;
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.Selenide;
+import com.codeborne.selenide.junit.ScreenShooter;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.Rule;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -17,6 +16,9 @@ import org.slf4j.LoggerFactory;
 import static com.codeborne.selenide.WebDriverRunner.setWebDriver;
 
 public abstract class BaseTest {
+
+    @Rule
+    public ScreenShooter makeScreenshotOnFailure = ScreenShooter.failedTests().succeededTests();
 
     //logger
     Logger log = LoggerFactory.getLogger(BaseTest.class);
@@ -28,11 +30,11 @@ public abstract class BaseTest {
 
         Configuration.timeout = 7000;
         Configuration.baseUrl = "https://cnn.com";
+        Configuration.reportsFolder = "target/reports";
+        ScreenShooter.failedTests().succeededTests();
 
         ChromeOptions options = new ChromeOptions();
-        options.addArguments("start-maximized");
-        options.addArguments("disable-popup-blocking");
-        options.addArguments("test-type");
+        options.addArguments("start-maximized", "disable-popup-blocking", "test-type");
         WebDriverManager.chromedriver().setup();
         WebDriver webDriver = new ChromeDriver(options);
         setWebDriver(webDriver);

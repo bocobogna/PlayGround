@@ -1,6 +1,5 @@
 package pages;
 
-import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
@@ -10,7 +9,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static com.codeborne.selenide.Condition.*;
+import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 
@@ -31,11 +30,11 @@ public class NewsPage {
                 .click();
     }
 
-    public NewsPage scrollToHeaders() {
+    public void scrollToHeaders() {
         cnnBusinessHeader
                 .scrollTo()
                 .shouldBe(visible);
-        return this;
+        String file = Selenide.screenshot("BusinessHeaders_" + Utils.DataGenerator.generateNowDate("yyyy-MM-dd_HH_mm_ss"));
     }
 
     public List<String> getBusinessHeaders() {
@@ -46,7 +45,7 @@ public class NewsPage {
     public List<String> headersToWordsList(List<String> list) {
         scrollToHeaders();
         String words = list.toString().toLowerCase();
-        words = words.replaceAll("[!,?.$&]", "");
+        words = words.replaceAll("[!,?.$&%]", "");
         return Arrays.asList(words.split(" "));
     }
 
