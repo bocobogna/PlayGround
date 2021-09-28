@@ -3,10 +3,12 @@ package tests;
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.junit.ScreenShooter;
+import com.codeborne.selenide.junit5.ScreenShooterExtension;
 import io.github.bonigarcia.wdm.WebDriverManager;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Rule;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.RegisterExtension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -15,22 +17,23 @@ import org.slf4j.LoggerFactory;
 
 import static com.codeborne.selenide.WebDriverRunner.setWebDriver;
 
+@ExtendWith({ScreenShooterExtension.class})
 public abstract class BaseTest {
 
-    @Rule
-    public ScreenShooter makeScreenshotOnFailure = ScreenShooter.failedTests().succeededTests();
+    @RegisterExtension
+    static ScreenShooterExtension screenshotEmAll = new ScreenShooterExtension(true);
 
     //logger
     Logger log = LoggerFactory.getLogger(BaseTest.class);
 
-    @BeforeClass
+    @BeforeAll
     public static void setup() {
 
         Selenide.closeWebDriver();
 
         Configuration.timeout = 7000;
         Configuration.baseUrl = "https://cnn.com";
-        Configuration.reportsFolder = "target/reports";
+        Configuration.reportsFolder = "target/screenshots";
         ScreenShooter.failedTests().succeededTests();
 
         ChromeOptions options = new ChromeOptions();
@@ -40,7 +43,7 @@ public abstract class BaseTest {
         setWebDriver(webDriver);
     }
 
-    @AfterClass
+    @AfterAll
     public static void tearDown() {
         Selenide.closeWebDriver();
     }

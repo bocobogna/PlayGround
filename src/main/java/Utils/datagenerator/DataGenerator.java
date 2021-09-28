@@ -1,4 +1,4 @@
-package Utils;
+package Utils.datagenerator;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

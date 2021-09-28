@@ -1,23 +1,30 @@
 package pages;
 
+import Utils.datagenerator.DataGenerator;
+import Utils.helpers.NotWebMethods;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.By;
 
-import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-import static com.codeborne.selenide.Condition.visible;
+import static Utils.helpers.NotWebMethods.textToLetters;
+import static Utils.helpers.NotWebMethods.textToWordsList;
+import static Utils.helpers.WebElementExtensions.getElement;
+import static Utils.helpers.WebElementHelper.clickOnElement;
+import static Utils.helpers.WebElementHelper.scrollToElement;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 
 public class NewsPage {
 
-    private SelenideElement acceptCookiesButton = $("#onetrust-accept-btn-handler");
-    private SelenideElement cnnBusinessHeader = $("h2[data-analytics='CNN Business_list-hierarchical-xs_']");
-    private ElementsCollection businessHeaders = $$(By.xpath("//h2[@data-analytics='CNN Business_list-hierarchical-xs_']//ancestor::ul//h3"));
+    private final SelenideElement acceptCookiesButton = $("#onetrust-accept-btn-handler");
+    private final SelenideElement cnnBusinessContainer = $(By.xpath("//h2[@data-analytics='CNN Business_list-hierarchical-xs_']//ancestor::ul"));
+    private final ElementsCollection businessHeaders = $$(By.xpath("//h2[@data-analytics='CNN Business_list-hierarchical-xs_']//ancestor::ul//h3"));
 
     public NewsPage open() {
         Selenide.open("");
@@ -25,90 +32,51 @@ public class NewsPage {
     }
 
     public void acceptCookies() {
-        acceptCookiesButton
-                .shouldBe(visible)
-                .click();
+        getElement(acceptCookiesButton);
+        clickOnElement(acceptCookiesButton);
     }
 
     public void scrollToHeaders() {
-        cnnBusinessHeader
-                .scrollTo()
-                .shouldBe(visible);
-        String file = Selenide.screenshot("BusinessHeaders_" + Utils.DataGenerator.generateNowDate("yyyy-MM-dd_HH_mm_ss"));
+        scrollToElement(cnnBusinessContainer);
+        String file = Selenide.screenshot("BusinessHeaders_" + DataGenerator.generateNowDate("yyyy-MM-dd_HH_mm_ss"));
     }
 
     public List<String> getBusinessHeaders() {
-        scrollToHeaders();
+        for (SelenideElement el : businessHeaders) {
+            getElement(el);
+        }
         return businessHeaders.texts();
     }
 
     public List<String> headersToWordsList(List<String> list) {
-        scrollToHeaders();
-        String words = list.toString().toLowerCase();
-        words = words.replaceAll("[!,?.$&%]", "");
-        return Arrays.asList(words.split(" "));
+        return textToWordsList(list);
     }
 
     public List<String> headersToLetters(List<String> list) {
-        scrollToHeaders();
-        String letters = list.toString();
-        letters = letters.replaceAll("\\W", "");
-        letters = letters.replaceAll(" ", "");
-        List<String> listToReturn = Arrays.asList(letters.split(""));
-        listToReturn.removeAll(Arrays.asList(" ", "", null));
-        return listToReturn;
+        return textToLetters(list);
     }
 
     public List<String> firstHeaderToLetterList() {
-        scrollToHeaders();
-        String text = businessHeaders.first().text().toLowerCase();
-        text = text.replace(" ", "");
-        return Arrays.asList(text.split(""));
+        return textToLetters(Collections.singletonList(businessHeaders.first().text().toLowerCase()));
     }
 
     public Set<String> findDuplicates(List<String> list) {
-        return list
-                .stream()
-                .filter(x -> Collections.frequency(list, x) > 1)
-                .collect(Collectors.toSet());
+        return NotWebMethods.findDuplicates(list);
     }
 
     public String getFirstDuplicate(List<String> list) {
-        HashSet<String> set = new HashSet<>();
-        int min = -1;
-        for (int i = list.size() - 1; i >= 0; i--)
-            if (set.contains(list.get(i)))
-                min = i;
-            else
-                set.add(list.get(i));
-        return min == -1 ? "No duplicates" : list.get(min);
+        return NotWebMethods.getFirstDuplicate(list);
     }
 
     public Map<String, List<Integer>> getDuplicatesWithIndexes(List<String> list) {
-        return IntStream.range(0, list.size())
-                .boxed()
-                .collect(Collectors.groupingBy(list::get))
-                .entrySet()
-                .stream()
-                .filter(e -> e.getValue().size() > 1)
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        return NotWebMethods.getDuplicatesWithIndexes(list);
     }
 
     public Map<String, Long> getDuplicatesCount(List<String> list) {
-        return list.stream()
-                .collect(Collectors.groupingBy(el -> el, Collectors.counting()))
-                .entrySet()
-                .stream()
-                .filter(el -> el.getValue() > 1)
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        return NotWebMethods.getDuplicatesCount(list);
     }
 
     public String getMostPopularElement(List<String> list) {
-        return list.stream()
-                .collect(Collectors.groupingBy(el -> el, Collectors.counting()))
-                .entrySet()
-                .stream()
-                .max(Map.Entry.comparingByValue())
-                .map(Map.Entry::getKey).get();
+        return NotWebMethods.getMostPopularElement(list);
     }
 }
